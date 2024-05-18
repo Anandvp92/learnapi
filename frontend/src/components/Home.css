@@ -28,3 +28,11 @@ table {
     padding: 0 15px;
     border-radius: 25px;
   }
+
+.tabletitle{    
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 50px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  }

@@ -3,29 +3,33 @@ import '../components/Home.css';
 
 
 export function Home() {
-    let [task,UseTask]=useState("Hello")
-
-  useEffect(() => {
-    const getnotes = async () => {
+    const [task,UseTask]=useState([]);
+    useEffect(() => {
+    let data=[]
+    const getnotes = async () => 
+      {
       try {
         let response = await fetch('http://127.0.0.1:4000/listall/');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        let data = await response.json();
-        console.log(data);
+        let data = await response.json(); 
         UseTask(data)
 
       } catch (error) {
         console.error('Fetch error:', error);
+        UseTask(data);
       }
     };
     
     getnotes();
+    const intervalId = setInterval(getnotes,2000);
+    return () => clearInterval(intervalId)
   }, []); // The empty dependency array ensures this runs only once after the initial render
 
   return (
     <>
+    <h1 className='tabletitle'>Task List</h1>
    <table>
   
   <tbody>
@@ -33,19 +37,34 @@ export function Home() {
   <tr>
     <th>SI NO</th>
     <th>Task</th>
-    <th>Updated Date</th>
     <th>Created Date</th>
+    <th>Updated Date</th>
     <th>Status</th>
     <th>Action</th>
+    <th>Change Status</th>
   </tr>
-  <tr>
-    <td>{task[0]["id"]}</td>
-    <td>{task[0]["task"]}</td>
-    <td>{task[0]["created time"]}</td>
-    <td>{task[0]["updated date"]}</td>
-    <td>{task[0]["status"]?"Done":"Not Done"}</td>
-    <td style={{"display":"flex" ,"gap":"25px" ,"justifyContent":"space-evenly"}}><button><a>Edit</a></button> <button><a>Delete</a></button></td>
-  </tr>
+
+    {task.map(item=>(
+      <tr key={item.id}>
+
+        <td>{item.id}</td>
+        <td>{item.task}</td>
+        <td>{item["created time"]}</td>
+        <td>{item["updated date"]}</td>
+        <td>{item["status"]===0?"Not Completed":"Completed"}</td>
+        <td>
+          <button>Delete</button>          
+          <button>Edit</button>
+        </td>
+        <td>
+          <button>Completed</button>
+          <button>Not Completed</button>
+        </td>
+      </tr>
+    
+  ))} 
+   
+
   </tbody>
 </table>
     </>
