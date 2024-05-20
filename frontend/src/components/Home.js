@@ -1,8 +1,24 @@
 import React, { useEffect ,useState} from 'react';
 import '../components/Home.css';
+import axios from 'axios';
+
+
+const delete_task = async (id)=>{
+  try{
+
+    const response = await axios.delete(`http://127.0.0.1:4000/deletetodo/${id}`);
+    console.log("Deleted the todo"); 
+  }
+  catch(error){
+    console.log(error)
+  }
+
+}
 
 
 export function Home() {
+
+     
     const [task,UseTask]=useState([]);
     useEffect(() => {
     let data=[]
@@ -43,26 +59,41 @@ export function Home() {
     <th>Action</th>
     <th>Change Status</th>
   </tr>
+{task.length===0?
+(
 
-    {task.map(item=>(
-      <tr key={item.id}>
+  <tr>
+  <td colSpan={7} id='errorlist' >No Task Found</td>
+  </tr>
 
-        <td>{item.id}</td>
-        <td>{item.task}</td>
-        <td>{item["created time"]}</td>
-        <td>{item["updated date"]}</td>
-        <td>{item["status"]===0?"Not Completed":"Completed"}</td>
-        <td>
-          <button>Delete</button>          
-          <button>Edit</button>
-        </td>
-        <td>
-          <button>Completed</button>
-          <button>Not Completed</button>
-        </td>
-      </tr>
-    
-  ))} 
+):
+
+(
+  task.map(item=>(
+    <tr key={item.id}>
+
+      <td>{item.id}</td>
+      <td>{item.task}</td>
+      <td>{item["created time"]}</td>
+      <td>{item["updated date"]}</td>
+      <td>{item["status"]===0?"Not Completed":"Completed"}</td>
+      <td>
+        <button  onClick={()=>{
+          delete_task(item.id)
+        }}>Delete</button>          
+        <button>Edit</button>
+      </td>
+      <td>
+        <button>Completed</button>
+        <button>Not Completed</button>
+      </td>
+    </tr>
+  
+))
+ 
+)
+
+} 
    
 
   </tbody>

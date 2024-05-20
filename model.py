@@ -10,7 +10,7 @@ class ToDo(Base):
     id=Column(Integer,primary_key=True)
     task = Column(String(500),unique=True)
     created_date=Column(DateTime,default=datetime.now())
-    updated_date=Column(DateTime,default=None)
+    updated_date=Column(DateTime,default=datetime.now())
     task_status=Column(Integer,default=0)
 
 

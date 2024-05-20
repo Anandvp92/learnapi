@@ -7,17 +7,19 @@ from model import TodoRequest
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 
-origins=[
-    'http://localhost:3000',
-]
 
 session = Session(bind=engine)
 
 app = FastAPI(debug=True)
 
+origins=[
+    'http://localhost:3000',
+]
 app.add_middleware(
      CORSMiddleware,
     allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"], 
 )
 
 @app.get("/")
